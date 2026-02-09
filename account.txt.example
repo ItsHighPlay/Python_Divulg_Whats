@@ -1,0 +1,6 @@
+login = seu_email@exemplo.com
+password = sua_senha_segura
+
+# Credenciais de e-mail para verificação 2FA
+email = seu_email@gmail.com
+email_password = sua_senha_de_app_gmail

@@ -1,0 +1,10 @@
+art==4.6
+pyfiglet==0.8.post1
+selenium==3.141.0
+urllib3==1.25.8
+XlsxWriter==1.2.8
+pywhatkit==5.4
+pyautogui==0.9.53
+pillow==9.5.0
+python-dotenv==1.0.0
+imap-tools==1.5.0

@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  bot-mercadolivre:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot-mercadolivre-afiliados
+    
+    # Variáveis de ambiente
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DISPLAY=:99
+      - IN_DOCKER=true
+      - CHROMEDRIVER_PATH=/app/utils/chromedriver-linux64/chromedriver
+    
+    # Volumes
+    volumes:
+      # Monta o diretório de outputs para salvar arquivos Excel
+      - ./outputs:/app/outputs
+      # Monta o arquivo de credenciais (não versione este arquivo!)
+      - ./account.txt:/app/account.txt:ro
+      # Opcional: monta código para desenvolvimento
+      # - ./:/app
+    
+    # Recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+    
+    # Rede
+    network_mode: bridge
+    
+    # Política de reinício
+    restart: unless-stopped
+    
+    # Comando personalizado (opcional)
+    # command: python bot_integrated.py
+    
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Serviço para testes
+  bot-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot-test
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DISPLAY=:99
+      - IN_DOCKER=true
+    volumes:
+      - ./outputs:/app/outputs
+      - ./account.txt:/app/account.txt:ro
+    command: python test_setup.py
+    profiles:
+      - test
